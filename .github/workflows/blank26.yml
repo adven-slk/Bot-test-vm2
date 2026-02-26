@@ -1,0 +1,25 @@
+name: vps
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install tmate using script
+        run: |
+          curl -fsSL https://github.com/MaxPeal/tmate/raw/fork-with-get-tmate.sh/get-tmate.sh -o get-tmate.sh
+          sh get-tmate.sh
+
+      - name: Start tmate session
+        run: |
+          tmate -F
