@@ -1,0 +1,35 @@
+name: vps
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install tmate dependencies
+        run: |
+          # Install necessary dependencies
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev libreadline-dev zlib1g-dev
+
+      - name: Download and Install tmate
+        run: |
+          # Attempting to download the latest tmate release (if 2.4.0 is unavailable)
+          curl -sSfL https://github.com/tmate-io/tmate/releases/download/2.5.0/tmate-2.5.0-linux-x86_64.tar.gz -o tmate.tar.gz
+          tar -xvzf tmate.tar.gz
+          sudo mv tmate-2.5.0-linux-x86_64 /usr/local/bin/tmate
+
+      - name: Start tmate session
+        run: |
+          # Start a tmate session and print the SSH access URL
+          tmate -F
